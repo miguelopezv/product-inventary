@@ -1,0 +1,11 @@
+{
+  "restaurant": [
+    { "id": 1, "name": "CheeseCake", "price": 200, "category": "dessert" },
+    {
+      "id": 2,
+      "name": "Hamburger",
+      "price": 300,
+      "category": "fast-food"
+    }
+  ]
+}
