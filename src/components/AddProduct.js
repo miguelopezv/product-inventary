@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import Error from './Error';
 
 const AddProduct = () => {
   const initialProduct = { name: '', price: 0, category: undefined };
+
   const [product, setProduct] = useState(initialProduct);
+  const [error, setError] = useState(false);
 
   const onChangeHandler = e => {
     setProduct({
@@ -11,10 +15,36 @@ const AddProduct = () => {
     });
   };
 
+  // TODO: check validation, it's failing
+  const addProduct = async e => {
+    let post = false;
+    e.preventDefault();
+
+    Object.values(product).forEach(value => {
+      if (!value) {
+        setError(true);
+        return;
+      }
+      setError(false);
+      post = true;
+    });
+
+    if (post) {
+      try {
+        const result = await axios.post(process.env.REACT_APP_API_URL, product);
+      } catch (error) {
+        console.log('TCL: AddProduct -> error', error);
+      }
+    }
+  };
+
   return (
     <div className="col-md-8 mx-auto">
       <h1 className="text-center">Add Product</h1>
-      <form className="mt-5">
+
+      {error ? <Error message="All fields required" /> : null}
+
+      <form className="mt-5" onSubmit={addProduct}>
         <div className="form-group">
           <label>Name:</label>
           <input
