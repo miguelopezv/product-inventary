@@ -5,7 +5,11 @@ import Swal from 'sweetalert2';
 import Error from './Error';
 
 const AddProduct = ({ history, setRequest }) => {
-  const initialProduct = { name: '', price: 0, category: undefined };
+  const initialProduct = {
+    name: '',
+    price: '',
+    category: ''
+  };
 
   const [product, setProduct] = useState(initialProduct);
   const [error, setError] = useState(false);
@@ -17,19 +21,17 @@ const AddProduct = ({ history, setRequest }) => {
     });
   };
 
-  // TODO: check validation, it's failing
   const addProduct = async e => {
     let post = false;
     e.preventDefault();
 
-    Object.values(product).forEach(value => {
-      if (!value) {
-        setError(true);
-        return;
-      }
+    if (!product.name || !product.price || !product.category) {
+      setError(true);
+      return;
+    } else {
       setError(false);
       post = true;
-    });
+    }
 
     if (post) {
       try {
@@ -49,7 +51,6 @@ const AddProduct = ({ history, setRequest }) => {
       }
     }
   };
-
   return (
     <div className="col-md-8 mx-auto">
       <h1 className="text-center">Add Product</h1>
