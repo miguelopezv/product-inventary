@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import Error from './Error';
 
-const AddProduct = () => {
+const AddProduct = ({ history }) => {
   const initialProduct = { name: '', price: 0, category: undefined };
 
   const [product, setProduct] = useState(initialProduct);
@@ -32,8 +34,17 @@ const AddProduct = () => {
     if (post) {
       try {
         const result = await axios.post(process.env.REACT_APP_API_URL, product);
+        if (result.status === 201) {
+          Swal.fire(
+            'Product created',
+            'Product has been created successfully',
+            'success'
+          );
+          history.push('/products');
+        }
       } catch (error) {
-        console.log('TCL: AddProduct -> error', error);
+        const err = error.toJSON();
+        Swal.fire('Error', err.message, 'error');
       }
     }
   };
@@ -123,4 +134,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default withRouter(AddProduct);
