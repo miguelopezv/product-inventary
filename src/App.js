@@ -11,10 +11,14 @@ import {
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [request, setRequest] = useState(true);
 
   useEffect(() => {
-    getProducts().then(res => setProducts(res.data));
-  }, []);
+    if (request) {
+      getProducts().then(res => setProducts(res.data));
+      setRequest(false);
+    }
+  }, [request]);
 
   const getProducts = async () =>
     await axios.get(process.env.REACT_APP_API_URL);
@@ -24,7 +28,11 @@ function App() {
       <Header />
       <main className="container mt-5">
         <Switch>
-          <Route exact path="/add-product" component={AddProduct} />
+          <Route
+            exact
+            path="/add-product"
+            render={() => <AddProduct setRequest={setRequest} />}
+          />
           <Route
             exact
             path="/products"

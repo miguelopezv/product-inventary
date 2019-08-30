@@ -4,7 +4,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import Error from './Error';
 
-const AddProduct = ({ history }) => {
+const AddProduct = ({ history, setRequest }) => {
   const initialProduct = { name: '', price: 0, category: undefined };
 
   const [product, setProduct] = useState(initialProduct);
@@ -40,6 +40,7 @@ const AddProduct = ({ history }) => {
             'Product has been created successfully',
             'success'
           );
+          setRequest(true);
           history.push('/products');
         }
       } catch (error) {
